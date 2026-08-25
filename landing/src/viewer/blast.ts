@@ -43,9 +43,6 @@ export class ImpactAnalyzer {
     const depthMap = new Map<string, number>();
     const queue: Array<{ id: string; depth: number }> = [{ id: targetFileId, depth: 0 }];
     const affectedNodes: BlastRadiusNode[] = [];
-    const impactGraphEdges = graph.edges.filter(
-      (e) => e.target === targetFileId || e.source === targetFileId
-    );
 
     visited.add(targetFileId);
 
@@ -96,6 +93,12 @@ export class ImpactAnalyzer {
     }
 
     const totalAffected = affectedNodes.length;
+
+    // Complete Induced Subgraph: All edges connecting any two affected nodes (including target)
+    const affectedIdsSet = new Set<string>([targetFileId, ...affectedNodes.map((n) => n.id)]);
+    const impactGraphEdges = graph.edges.filter(
+      (e) => affectedIdsSet.has(e.source) && affectedIdsSet.has(e.target)
+    );
 
     // Calculate Risk Score (0 - 100)
     let riskScore = 0;
@@ -169,16 +172,25 @@ export class ImpactAnalyzer {
     let orphanCount = 0;
     let godModulesCount = 0;
 
-    // Detect Circular Dependencies across whole graph
+    // Detect Circular Dependencies across whole graph with canonical cycle deduplication
     const allCycles: string[][] = [];
-    const visitedGlobal = new Set<string>();
+    const seenCycleKeys = new Set<string>();
 
     for (const fileId of Object.keys(nodes)) {
-      if (visitedGlobal.has(fileId)) continue;
       const cycles = this.findCyclesForNodeSimple(nodes, fileId);
       for (const c of cycles) {
-        allCycles.push(c);
-        c.forEach((f) => visitedGlobal.add(f));
+        const raw = c.slice(0, -1);
+        if (raw.length === 0) continue;
+        // Normalize rotation to lowest alphabetical node to avoid counting A->B->A and B->A->B as 2 cycles
+        let minIdx = 0;
+        for (let i = 1; i < raw.length; i++) {
+          if (raw[i] < raw[minIdx]) minIdx = i;
+        }
+        const key = [...raw.slice(minIdx), ...raw.slice(0, minIdx)].join('->');
+        if (!seenCycleKeys.has(key)) {
+          seenCycleKeys.add(key);
+          allCycles.push(c);
+        }
       }
     }
 
