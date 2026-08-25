@@ -125,29 +125,32 @@ const CACHE_PREFIX = 'atlas_graph_cache_';
 export async function scanGitHubRepo(
   repoInput: string,
   githubToken?: string,
-  onProgress?: (progress: ScanProgress) => void
+  onProgress?: (progress: ScanProgress) => void,
+  forceRefresh: boolean = false
 ): Promise<DependencyGraph> {
   const { owner, repo, branch, pullNumber } = parseRepoInput(repoInput);
   const cacheKey = `${CACHE_PREFIX}${owner}_${repo}`;
 
   // 1. Check local cache (Instant load & 0 API requests)
-  try {
-    const cached = localStorage.getItem(cacheKey);
-    if (cached && !githubToken) {
-      const parsedGraph = JSON.parse(cached) as DependencyGraph;
-      if (Date.now() - parsedGraph.scannedAt < 1000 * 60 * 60 * 2) {
-        onProgress?.({
-          stage: 'done',
-          message: `Loaded ${parsedGraph.totalFiles} files from cache!`,
-          totalFiles: parsedGraph.totalFiles,
-          processedFiles: parsedGraph.totalFiles,
-          percentage: 100,
-        });
-        return parsedGraph;
+  if (!forceRefresh) {
+    try {
+      const cached = localStorage.getItem(cacheKey);
+      if (cached && !githubToken) {
+        const parsedGraph = JSON.parse(cached) as DependencyGraph;
+        if (Date.now() - parsedGraph.scannedAt < 1000 * 60 * 60 * 2) {
+          onProgress?.({
+            stage: 'done',
+            message: `Loaded ${parsedGraph.totalFiles} files from cache!`,
+            totalFiles: parsedGraph.totalFiles,
+            processedFiles: parsedGraph.totalFiles,
+            percentage: 100,
+          });
+          return parsedGraph;
+        }
       }
+    } catch {
+      // ignore cache read errors
     }
-  } catch {
-    // ignore cache read errors
   }
 
   onProgress?.({

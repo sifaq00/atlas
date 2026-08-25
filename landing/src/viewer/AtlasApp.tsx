@@ -81,7 +81,7 @@ export const AtlasApp: React.FC<AtlasAppProps> = ({ onBackToLanding }) => {
   }, []);
 
   // Scan repository
-  const handleScan = async (repoToScan?: string) => {
+  const handleScan = async (repoToScan?: string, forceRefresh: boolean = false) => {
     const targetRepo = repoToScan || repoInput;
     if (!targetRepo.trim()) return;
 
@@ -91,7 +91,7 @@ export const AtlasApp: React.FC<AtlasAppProps> = ({ onBackToLanding }) => {
     setSelectedFolder(null);
     setProgress({
       stage: 'fetching-tree',
-      message: 'Connecting to GitHub API...',
+      message: forceRefresh ? 'Reloading fresh files from GitHub...' : 'Connecting to GitHub API...',
       totalFiles: 0,
       processedFiles: 0,
       percentage: 5,
@@ -105,7 +105,8 @@ export const AtlasApp: React.FC<AtlasAppProps> = ({ onBackToLanding }) => {
       const resultGraph = await scanGitHubRepo(
         targetRepo,
         githubToken || undefined,
-        (p) => setProgress(p)
+        (p) => setProgress(p),
+        forceRefresh
       );
 
       setGraph(resultGraph);
@@ -329,6 +330,20 @@ ${graph.health.issues.map((issue) => `- **[${issue.severity.toUpperCase()}] ${is
             <FolderOpen size={13} className="text-sky-400" />
             <span className="hidden xl:inline">Local Folder</span>
           </button>
+
+          {/* Reload / Re-scan from GitHub */}
+          {graph && (
+            <button
+              type="button"
+              onClick={() => handleScan(repoInput, true)}
+              disabled={isLoading}
+              className="h-9 px-2.5 bg-slate-900/90 hover:bg-white/10 border border-white/15 text-slate-300 hover:text-white rounded-lg text-xs font-mono flex items-center gap-1.5 transition-all shrink-0 cursor-pointer disabled:opacity-40"
+              title="Re-scan and fetch fresh latest code from GitHub (Bypasses Cache)"
+            >
+              <RefreshCw size={13} className={`text-[#D9F65A] ${isLoading ? 'animate-spin' : ''}`} />
+              <span className="hidden xl:inline">Reload</span>
+            </button>
+          )}
 
           {/* Token Modal Toggle */}
           <button
