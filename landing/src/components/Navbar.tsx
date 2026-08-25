@@ -33,8 +33,8 @@ const Navbar: React.FC = () => {
       <div className="max-w-[1240px] w-full mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
         {/* Logo */}
         <a href="#" className="flex items-center gap-2 no-underline group">
-          <img src="/icon.png" alt="Atlas" className="w-7 h-7 object-contain transition-transform duration-300 group-hover:scale-110" />
-          <img src="/atlasss.png" alt="Atlas" className="h-5 object-contain" />
+          <img src="/icon.webp" alt="Atlas" className="w-7 h-7 object-contain transition-transform duration-300 group-hover:scale-110" />
+          <img src="/atlasss.webp" alt="Atlas" className="h-5 object-contain" />
         </a>
 
         {/* Nav Links */}

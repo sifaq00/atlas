@@ -59,12 +59,12 @@ const Hero: React.FC = () => {
         ref={heroRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="relative w-full h-full bg-sky-brand bg-[url('/sky-clouds.png')] bg-bottom bg-cover bg-no-repeat rounded-[20px] sm:rounded-[24px] md:rounded-[28px] overflow-hidden text-white flex flex-col justify-between shadow-sm"
+        className="relative w-full h-full bg-sky-brand bg-[url('/sky-clouds.webp')] bg-bottom bg-cover bg-no-repeat rounded-[20px] sm:rounded-[24px] md:rounded-[28px] overflow-hidden text-white flex flex-col justify-between shadow-sm"
       >
         {/* Parallax background layer */}
         <motion.div
           style={{ x: bgX, y: bgY, translateY: bgParallaxY }}
-          className="absolute inset-0 bg-[url('/sky-clouds.png')] bg-bottom bg-cover bg-no-repeat -z-10"
+          className="absolute inset-0 bg-[url('/sky-clouds.webp')] bg-bottom bg-cover bg-no-repeat -z-10"
         />
 
         {/* 1. Top Navbar */}
@@ -77,8 +77,8 @@ const Hero: React.FC = () => {
           >
             {/* Logo */}
             <motion.a variants={fadeUp} className="flex items-center gap-2 text-white no-underline group" href="#">
-              <img src="/icon.png" alt="Atlas" className="w-7 h-7 sm:w-8 sm:h-8 object-contain transition-transform duration-300 group-hover:scale-110" />
-              <img src="/atlasss.png" alt="Atlas" className="h-5 sm:h-6 object-contain" style={{ filter: 'brightness(0) invert(1)' }} />
+              <img src="/icon.webp" alt="Atlas" className="w-7 h-7 sm:w-8 sm:h-8 object-contain transition-transform duration-300 group-hover:scale-110" />
+              <img src="/atlasss.webp" alt="Atlas" className="h-5 sm:h-6 object-contain" style={{ filter: 'brightness(0) invert(1)' }} />
             </motion.a>
 
             {/* Center Nav Links (Desktop) */}

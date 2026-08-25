@@ -138,7 +138,7 @@ const Features: React.FC = () => {
           </div>
           <div className="relative flex flex-col items-center">
             <img
-              src="/images/robot-mascot.png"
+              src="/images/robot-mascot.webp"
               alt=""
               className="w-[50px] sm:w-[60px] h-auto object-contain relative z-10"
               style={{ marginTop: '-24px' }}

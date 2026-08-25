@@ -17,13 +17,13 @@ const CTA: React.FC = () => {
     <div className="w-full p-2 sm:p-2.5 bg-white" ref={ref}>
       <motion.section
         style={{ scale, opacity }}
-        className="py-16 sm:py-24 md:py-28 relative text-center text-white bg-sky-brand bg-[url('/sky-clouds.png')] bg-bottom bg-cover bg-no-repeat rounded-[20px] sm:rounded-[24px] md:rounded-[28px] overflow-hidden"
+        className="py-16 sm:py-24 md:py-28 relative text-center text-white bg-sky-brand bg-[url('/sky-clouds.webp')] bg-bottom bg-cover bg-no-repeat rounded-[20px] sm:rounded-[24px] md:rounded-[28px] overflow-hidden"
         id="cta"
       >
         {/* Parallax background layer */}
         <motion.div
           style={{ y: bgY }}
-          className="absolute inset-0 bg-[url('/sky-clouds.png')] bg-bottom bg-cover bg-no-repeat -z-10 scale-110"
+          className="absolute inset-0 bg-[url('/sky-clouds.webp')] bg-bottom bg-cover bg-no-repeat -z-10 scale-110"
         />
 
         <motion.div

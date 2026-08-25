@@ -76,7 +76,7 @@ const BentoGrid: React.FC = () => {
             </div>
             <div className="my-6 sm:my-8 flex justify-center items-center flex-1 relative">
               <motion.img
-                src="/images/robot-mascot.png"
+                src="/images/robot-mascot.webp"
                 alt="Atlas robot mascot holding a globe"
                 className="max-w-[180px] w-full h-auto object-contain"
                 animate={{ y: [0, -6, 0] }}

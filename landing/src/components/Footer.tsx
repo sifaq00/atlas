@@ -18,8 +18,8 @@ const Footer: React.FC = () => {
           {/* Logo + tagline */}
           <div className="max-w-xs">
             <a href="#" className="flex items-center gap-2.5 no-underline group mb-4 text-white">
-              <img src="/icon.png" alt="Atlas" className="w-8 h-8 object-contain" />
-              <img src="/atlasss.png" alt="Atlas" className="h-6 object-contain" style={{ filter: 'brightness(0) invert(1)' }} />
+              <img src="/icon.webp" alt="Atlas" className="w-8 h-8 object-contain" />
+              <img src="/atlasss.webp" alt="Atlas" className="h-6 object-contain" style={{ filter: 'brightness(0) invert(1)' }} />
             </a>
             <p className="text-sm text-slate-400 leading-relaxed">
               Codebase architecture visualizer for VS Code. Understand any repo in minutes, not days.
