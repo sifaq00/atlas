@@ -96,12 +96,12 @@ const Hero: React.FC = () => {
           </div>
         </div>
 
-        {/* 3. 3D Curved Moving Cards Marquee (Elevated & Responsive) */}
-        <div className="relative z-10 w-full flex flex-col justify-end items-center pb-2 sm:pb-3 pt-0 shrink-0 -mt-2 sm:-mt-4">
+        {/* 3. 3D Curved Moving Cards Marquee (Elevated & Separated) */}
+        <div className="relative z-10 w-full flex flex-col justify-end items-center pb-3 sm:pb-4 pt-0 shrink-0 -mt-5 sm:-mt-8 md:-mt-10">
           <HeroCards3D />
 
-          {/* Rating text on top of clouds */}
-          <div className="flex flex-col items-center justify-center gap-0.5 text-[10px] sm:text-[11px] text-white/90 -mt-1 sm:mt-0 relative z-20">
+          {/* Rating text on top of clouds with healthy spacing */}
+          <div className="flex flex-col items-center justify-center gap-0.5 text-[10px] sm:text-[11px] text-white/90 mt-3 sm:mt-4 relative z-20">
             <span>Rated 4.9/5 by 4,900+ developers</span>
             <div className="text-amber-300 tracking-[2px] text-[9.5px] sm:text-[10.5px]">★★★★★</div>
           </div>
