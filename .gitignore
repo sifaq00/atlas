@@ -1,0 +1,9 @@
+node_modules/
+dist/
+dist-webview/
+out/
+*.vsix
+*.zip
+.DS_Store
+*.log
+.vite/

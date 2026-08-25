@@ -1,0 +1,205 @@
+{
+  "name": "atlas-map",
+  "displayName": "Atlas — Codebase Map",
+  "description": "Never feel lost in a codebase again. Interactive architecture map, Start Here ranking, and blast radius — right in your sidebar.",
+  "version": "0.1.1",
+  "publisher": "wealthypeople",
+  "icon": "media/icon.png",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wealthypeople/scope"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Visualization",
+    "Other"
+  ],
+  "keywords": [
+    "atlas",
+    "codebase map",
+    "architecture map",
+    "dependency graph",
+    "blast radius",
+    "start here",
+    "impact analysis",
+    "refactoring",
+    "typescript",
+    "javascript"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished",
+    "onLanguage:javascript",
+    "onLanguage:javascriptreact",
+    "onLanguage:typescript",
+    "onLanguage:typescriptreact",
+    "onCommand:atlas.open",
+    "onCommand:atlas.showBlast",
+    "onCommand:atlas.focusFile",
+    "onCommand:atlas.reindex"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "atlas",
+          "title": "Atlas",
+          "icon": "media/activity-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "atlas": [
+        {
+          "type": "webview",
+          "id": "atlas.mapView",
+          "name": "Architecture Map"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "atlas.open",
+        "title": "Open Architecture Map",
+        "category": "Atlas",
+        "icon": "$(type-hierarchy)"
+      },
+      {
+        "command": "atlas.reindex",
+        "title": "Re-index Workspace",
+        "category": "Atlas",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "atlas.showBlast",
+        "title": "Show Blast Radius of Current File",
+        "category": "Atlas",
+        "icon": "$(flame)"
+      },
+      {
+        "command": "atlas.focusFile",
+        "title": "Locate Current File in Map",
+        "category": "Atlas",
+        "icon": "$(target)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "atlas.showBlast",
+        "key": "ctrl+shift+i",
+        "mac": "cmd+shift+i",
+        "when": "editorTextFocus"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "atlas.showBlast",
+          "group": "navigation",
+          "when": "resourceExtname =~ /\\.(ts|tsx|js|jsx|mjs|cjs)$/"
+        },
+        {
+          "command": "atlas.open",
+          "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "atlas.showBlast",
+          "group": "7_modification",
+          "when": "resourceExtname =~ /\\.(ts|tsx|js|jsx|mjs|cjs)$/"
+        },
+        {
+          "command": "atlas.focusFile",
+          "group": "7_modification",
+          "when": "resourceExtname =~ /\\.(ts|tsx|js|jsx|mjs|cjs)$/"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "atlas.showBlast",
+          "group": "navigation",
+          "when": "resourceExtname =~ /\\.(ts|tsx|js|jsx|mjs|cjs)$/"
+        },
+        {
+          "command": "atlas.open",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Atlas",
+      "properties": {
+        "atlas.autoIndex": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically index workspace on startup."
+        },
+        "atlas.exclude": {
+          "type": "array",
+          "default": [
+            "**/node_modules/**",
+            "**/.git/**",
+            "**/.next/**",
+            "**/dist/**",
+            "**/build/**",
+            "**/coverage/**",
+            "**/out/**",
+            "**/*.test.*",
+            "**/*.spec.*"
+          ],
+          "description": "Glob patterns to exclude from Atlas architecture mapping."
+        },
+        "atlas.blastThreshold": {
+          "type": "number",
+          "default": 30,
+          "description": "Warn when a file's blast radius exceeds this threshold."
+        },
+        "atlas.maxFiles": {
+          "type": "number",
+          "default": 5000,
+          "description": "Maximum number of files to index in workspace."
+        },
+        "atlas.codelens.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable Blast Radius CodeLens on line 1 of files."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run build",
+    "compile": "tsc -p ./ && pnpm run build:extension && pnpm run build:webview",
+    "watch": "node esbuild.js --watch",
+    "build": "pnpm run build:webview && pnpm run build:extension",
+    "build:extension": "node esbuild.js --production",
+    "build:webview": "vite build",
+    "dev:webview": "vite",
+    "package": "npx @vscode/vsce package --no-dependencies",
+    "test": "vitest run",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "d3-force": "^3.0.0",
+    "htm": "^3.1.1",
+    "oxc-parser": "^0.147.0",
+    "picomatch": "^4.0.2",
+    "preact": "^10.29.8"
+  },
+  "devDependencies": {
+    "@oxc-project/types": "^0.147.0",
+    "@preact/preset-vite": "^2.10.6",
+    "@types/node": "^22.10.1",
+    "@types/picomatch": "^3.0.0",
+    "@types/vscode": "^1.85.0",
+    "esbuild": "^0.24.0",
+    "typescript": "^7.0.2",
+    "vite": "^6.0.1",
+    "vitest": "^4.1.11"
+  }
+}
