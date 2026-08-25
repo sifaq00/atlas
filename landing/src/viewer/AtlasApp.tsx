@@ -41,7 +41,7 @@ interface AtlasAppProps {
 
 export const AtlasApp: React.FC<AtlasAppProps> = ({ onBackToLanding }) => {
   const urlParams = new URLSearchParams(window.location.search);
-  const initialRepo = urlParams.get('repo') || 'sifaq00/atlas';
+  const initialRepo = urlParams.get('repo') || '';
 
   const [repoInput, setRepoInput] = useState(initialRepo);
   const [githubToken, setGithubToken] = useState('');
@@ -163,7 +163,9 @@ export const AtlasApp: React.FC<AtlasAppProps> = ({ onBackToLanding }) => {
   };
 
   useEffect(() => {
-    handleScan(initialRepo);
+    if (initialRepo && initialRepo.trim()) {
+      handleScan(initialRepo);
+    }
   }, []);
 
   const impactResult: ImpactResult | null = useMemo(() => {
@@ -786,14 +788,67 @@ ${graph.health.issues.map((issue) => `- **[${issue.severity.toUpperCase()}] ${is
         )}
 
         {!graph && !isLoading && !error && (
-          <div className="flex-1 flex flex-col items-center justify-center text-center p-6 space-y-4">
-            <img src="/icon.webp" alt="Atlas" className="w-16 h-16 object-contain opacity-60" />
-            <h2 className="text-xl font-bold font-mono text-slate-300">
-              Interactive Architecture Map
-            </h2>
-            <p className="text-sm text-slate-400 max-w-md font-sans leading-relaxed">
-              Paste any GitHub repository URL or click <span className="font-mono text-[#D9F65A]">Local Folder</span> to map your architecture instantly in your browser.
-            </p>
+          <div className="flex-1 flex flex-col items-center justify-center text-center p-6 space-y-6 max-w-xl mx-auto">
+            <div className="relative">
+              <div className="absolute inset-0 bg-[#D9F65A]/10 rounded-full blur-xl -z-10 scale-150" />
+              <img src="/icon.webp" alt="Atlas" className="w-16 h-16 object-contain" />
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold font-mono text-white tracking-tight">
+                Map Codebase Architecture
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-400 mt-2 font-sans leading-relaxed">
+                Paste any public GitHub repository or scan a local folder to visualize dependencies, blast radius, and modules in 2D & 3D.
+              </p>
+            </div>
+
+            {/* Quick Sample Presets */}
+            <div className="w-full bg-slate-900/80 rounded-2xl p-4 border border-white/10 space-y-3">
+              <span className="text-[10.5px] uppercase font-mono text-slate-400 tracking-wider font-semibold block">
+                Try Sample Repositories:
+              </span>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {[
+                  { name: 'React', repo: 'facebook/react', tag: 'UI Library' },
+                  { name: 'Next.js', repo: 'vercel/next.js', tag: 'Framework' },
+                  { name: 'Tailwind', repo: 'tailwindlabs/tailwindcss', tag: 'CSS' },
+                  { name: 'Express', repo: 'expressjs/express', tag: 'Backend' },
+                  { name: 'Zustand', repo: 'pmndrs/zustand', tag: 'State' },
+                  { name: 'Atlas', repo: 'sifaq00/atlas', tag: 'This Repo' },
+                ].map((item) => (
+                  <button
+                    key={item.repo}
+                    type="button"
+                    onClick={() => {
+                      setRepoInput(item.repo);
+                      handleScan(item.repo);
+                    }}
+                    className="p-2.5 rounded-xl bg-white/[0.03] hover:bg-[#D9F65A]/10 border border-white/10 hover:border-[#D9F65A]/40 text-left transition-all group cursor-pointer"
+                  >
+                    <div className="font-mono text-xs font-bold text-slate-200 group-hover:text-[#D9F65A] truncate">
+                      {item.name}
+                    </div>
+                    <div className="text-[10px] text-slate-500 font-mono truncate">
+                      {item.tag}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Or Local Folder */}
+            <div className="flex items-center gap-3">
+              <span className="text-xs text-slate-500 font-mono">or</span>
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/15 text-slate-200 hover:text-white rounded-xl text-xs font-mono flex items-center gap-2 transition-all cursor-pointer shadow-lg"
+              >
+                <FolderOpen size={14} className="text-sky-400" />
+                <span>Open Local Folder (100% Offline)</span>
+              </button>
+            </div>
           </div>
         )}
       </main>
