@@ -7,70 +7,70 @@ interface CardData {
 }
 
 const CARDS: CardData[] = [
-  // 1. Code Health - Square 1:1
+  // 1. Start Here Ranking
   {
-    id: 'health',
+    id: 'start-here',
     content: (
-      <div className="w-full h-full p-3.5 sm:p-4 flex flex-col justify-between select-none bg-white rounded-[18px] sm:rounded-[20px] border border-white/90  ">
+      <div className="w-full h-full p-3.5 sm:p-4 flex flex-col justify-between select-none bg-white rounded-[18px] sm:rounded-[20px] border border-white/90">
         <div>
-          <div className="font-mono text-[8px] sm:text-[8.5px] tracking-wider uppercase font-semibold text-slate-400">Code Health</div>
-          <div className="text-lg sm:text-xl font-bold tracking-tight text-sky-600 mt-0.5">
-            98% <span className="text-[9.5px] sm:text-[10px] font-normal text-slate-400">clean</span>
-          </div>
+          <div className="font-mono text-[8px] sm:text-[8.5px] tracking-wider uppercase font-semibold text-slate-400">Start Here</div>
+          <div className="text-[11.5px] sm:text-[12.5px] font-bold text-slate-900 leading-snug mt-0.5">Top Entry Points</div>
         </div>
         <div className="space-y-1.5 my-auto">
-          <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-            <div className="h-full bg-sky-500 rounded-full w-[92%]"></div>
-          </div>
-          <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-            <div className="h-full bg-sky-400 rounded-full w-[78%]"></div>
-          </div>
-          <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-            <div className="h-full bg-sky-300 rounded-full w-[60%]"></div>
-          </div>
+          {[
+            { name: 'main.ts', score: '3.0', color: 'bg-lime-brand' },
+            { name: 'App.tsx', score: '2.7', color: 'bg-sky-400' },
+            { name: 'router.ts', score: '2.1', color: 'bg-sky-300' },
+            { name: 'index.tsx', score: '1.8', color: 'bg-sky-200' },
+          ].map((f, i) => (
+            <div key={i} className="bg-white/95 backdrop-blur-md rounded-full px-2 py-1 text-[9.5px] sm:text-[10px] font-medium text-slate-800 flex items-center justify-between shadow-sm border border-slate-100">
+              <div className="flex items-center gap-1.5">
+                <span className={`w-2 h-2 rounded-full ${f.color}`}></span>
+                <span className="font-mono text-[9px] sm:text-[9.5px]">{f.name}</span>
+              </div>
+              <span className="text-[7px] sm:text-[7.5px] font-mono font-semibold bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded-full">{f.score}</span>
+            </div>
+          ))}
         </div>
-        <div className="text-[8.5px] sm:text-[9px] text-slate-400 font-mono flex justify-between font-medium">
-          <span>0 Loops</span>
-          <span>Rust</span>
-          <span>Zero-Copy</span>
-        </div>
+        <div className="text-[8.5px] sm:text-[9px] text-slate-400 font-mono">Ranked by fan-in + entry weight</div>
       </div>
     ),
   },
 
-  // 2. Dependency Graph - Square 1:1
+  // 2. Dependency Graph
   {
     id: 'graph',
     content: (
-      <div className="w-full h-full p-3.5 sm:p-4 flex flex-col justify-between select-none bg-white rounded-[18px] sm:rounded-[20px] border border-white/90  ">
+      <div className="w-full h-full p-3.5 sm:p-4 flex flex-col justify-between select-none bg-white rounded-[18px] sm:rounded-[20px] border border-white/90">
         <div>
           <div className="font-mono text-[8px] sm:text-[8.5px] tracking-wider uppercase font-semibold text-slate-400">Dependency Graph</div>
-          <div className="text-[11.5px] sm:text-[12.5px] font-bold text-slate-900 leading-snug mt-0.5">AST Parsing Engine</div>
+          <div className="text-[11.5px] sm:text-[12.5px] font-bold text-slate-900 leading-snug mt-0.5">Architecture Map</div>
         </div>
         <div className="h-12 sm:h-14 flex items-end justify-between gap-1.5 my-auto px-1">
-          <div className="w-full bg-sky-100 rounded-t h-[30%]"></div>
-          <div className="w-full bg-sky-200 rounded-t h-[45%]"></div>
+          <div className="w-full bg-purple-300 rounded-t h-[30%]"></div>
+          <div className="w-full bg-purple-400 rounded-t h-[45%]"></div>
           <div className="w-full bg-sky-300 rounded-t h-[60%]"></div>
           <div className="w-full bg-sky-400 rounded-t h-[75%]"></div>
-          <div className="w-full bg-sky-500 rounded-t h-[90%]"></div>
-          <div className="w-full bg-sky-600 rounded-t h-[100%]"></div>
-          <div className="w-full bg-[#D9F65A] rounded-t h-[80%]"></div>
+          <div className="w-full bg-amber-400 rounded-t h-[90%]"></div>
+          <div className="w-full bg-emerald-400 rounded-t h-[100%]"></div>
+          <div className="w-full bg-slate-300 rounded-t h-[80%]"></div>
         </div>
         <div className="text-[8px] sm:text-[8.5px] text-slate-400 font-mono flex justify-between font-medium">
           <span>UI</span>
-          <span>API</span>
-          <span>DB</span>
-          <span>Core</span>
+          <span>Svc</span>
+          <span>Data</span>
+          <span>Util</span>
+          <span>Config</span>
         </div>
       </div>
     ),
   },
 
-  // 3. Live Map (Glassmorphic) - Square 1:1
+  // 3. Live Map
   {
     id: 'live-map',
     content: (
-      <div className="w-full h-full p-3 sm:p-3.5 flex flex-col justify-between select-none bg-white/55 backdrop-blur-xl rounded-[18px] sm:rounded-[20px] border border-white/70 text-slate-900  ">
+      <div className="w-full h-full p-3 sm:p-3.5 flex flex-col justify-between select-none bg-white/55 backdrop-blur-xl rounded-[18px] sm:rounded-[20px] border border-white/70 text-slate-900">
         <div className="flex items-center justify-between">
           <span className="font-mono text-[8px] sm:text-[8.5px] font-semibold uppercase tracking-wider text-slate-700">Live Map</span>
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -96,7 +96,7 @@ const CARDS: CardData[] = [
     ),
   },
 
-  // 4. Blast Radius - Square 1:1
+  // 4. Blast Radius
   {
     id: 'blast-radius',
     content: (
@@ -113,33 +113,42 @@ const CARDS: CardData[] = [
             <div className="text-[8.5px] sm:text-[9.5px] text-slate-500 mt-0.5 font-medium">downstream dependent</div>
           </div>
           <div className="flex gap-1 flex-wrap mt-1">
-            <span className="font-mono text-[7px] sm:text-[7.5px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full font-medium">auth/*</span>
-            <span className="font-mono text-[7px] sm:text-[7.5px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full font-medium">session</span>
+            <span className="font-mono text-[7px] sm:text-[7.5px] bg-rose-50 text-rose-700 px-2 py-0.5 rounded-full font-medium border border-rose-200">L1 direct</span>
+            <span className="font-mono text-[7px] sm:text-[7.5px] bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full font-medium border border-amber-200">L2+ cascade</span>
           </div>
         </div>
       </div>
     ),
   },
 
-  // 5. Data Points 520k+ - Square 1:1
+  // 5. Circular Dependency Detection
   {
-    id: 'datapoints',
+    id: 'circular',
     content: (
-      <div className="w-full h-full p-3.5 sm:p-4 flex flex-col justify-between select-none bg-white rounded-[18px] sm:rounded-[20px] border border-white/90  ">
-        <div className="flex gap-1 flex-wrap">
-          <span className="font-mono text-[7px] sm:text-[7.5px] font-semibold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full">AST</span>
-          <span className="font-mono text-[7px] sm:text-[7.5px] font-semibold bg-[#D9F65A] text-[#1E2405] px-2 py-0.5 rounded-full">Rust</span>
+      <div className="w-full h-full p-3.5 sm:p-4 flex flex-col justify-between select-none bg-white rounded-[18px] sm:rounded-[20px] border border-white/90">
+        <div className="flex items-start justify-between">
+          <div>
+            <div className="font-mono text-[8px] sm:text-[8.5px] tracking-wider uppercase font-semibold text-slate-400">Circular Deps</div>
+            <div className="text-[11.5px] sm:text-[12.5px] font-bold text-slate-900 leading-snug mt-0.5">Tarjan SCC</div>
+          </div>
+          <span className="text-rose-500 font-mono text-[7px] sm:text-[7.5px] bg-rose-50 px-1.5 py-0.5 rounded font-bold border border-rose-200">2 found</span>
         </div>
-        <div className="my-auto text-left">
-          <div className="font-mono text-[8px] sm:text-[8.5px] uppercase font-semibold text-slate-400">Data Points</div>
-          <div className="text-[25px] sm:text-[28px] font-extrabold tracking-tight text-slate-900 leading-none mt-0.5">520k+</div>
+        <div className="space-y-1 my-auto mt-2">
+          <div className="bg-white/95 backdrop-blur-md rounded-full px-2 py-1 text-[9px] sm:text-[9.5px] font-medium text-slate-700 flex items-center gap-1.5 shadow-sm border border-slate-100">
+            <span className="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
+            <span className="font-mono">auth → user → auth</span>
+          </div>
+          <div className="bg-white/95 backdrop-blur-md rounded-full px-2 py-1 text-[9px] sm:text-[9.5px] font-medium text-slate-700 flex items-center gap-1.5 shadow-sm border border-slate-100">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+            <span className="font-mono">db → model → db</span>
+          </div>
         </div>
-        <div className="text-[8.5px] sm:text-[9.5px] text-slate-500 font-medium leading-tight">Nodes in memory</div>
+        <div className="text-[8.5px] sm:text-[9px] text-slate-400 font-mono">SCC cycle detection</div>
       </div>
     ),
   },
 
-  // 6. AST Engine - Square 1:1
+  // 6. AST Engine
   {
     id: 'ast-engine',
     content: (
@@ -149,14 +158,14 @@ const CARDS: CardData[] = [
         </div>
         <div className="my-auto">
           <div className="text-[13.5px] sm:text-[15px] font-bold text-white leading-snug">AST Engine</div>
-          <div className="text-[9.5px] sm:text-[10px] text-sky-100 mt-0.5 leading-tight">Deterministic WASM</div>
+          <div className="text-[9.5px] sm:text-[10px] text-sky-100 mt-0.5 leading-tight">Rust OXC Parser</div>
         </div>
         <span className="font-mono text-[7.5px] sm:text-[8px] bg-white/20 text-white px-2 py-0.5 rounded-full w-fit">100% Local</span>
       </div>
     ),
   },
 
-  // 7. Architecture Layer - Square 1:1
+  // 7. Architecture Layer
   {
     id: 'architecture',
     content: (
@@ -164,10 +173,10 @@ const CARDS: CardData[] = [
         <div>
           <span className="font-mono text-[7.5px] sm:text-[8px] uppercase font-bold text-emerald-400">Architecture</span>
           <div className="text-[11px] sm:text-[12px] font-medium leading-snug text-slate-100 mt-1">
-            Layered: <span className="text-[#D9F65A]">UI</span>, <span className="text-sky-300">Services</span>, & Data
+            Layered: <span className="text-purple-400">UI</span>, <span className="text-sky-300">Services</span>, <span className="text-amber-300">Data</span>
           </div>
         </div>
-        <div className="text-[8.5px] sm:text-[9px] text-slate-400 mt-auto font-medium">Instant navigation</div>
+        <div className="text-[8.5px] sm:text-[9px] text-slate-400 mt-auto font-medium">Auto-classified by imports</div>
       </div>
     ),
   },
