@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useCallback } from 'react';
 import { motion, useAnimationFrame, useMotionValue } from 'framer-motion';
 
 interface CardData {
@@ -11,7 +11,7 @@ const CARDS: CardData[] = [
   {
     id: 'health',
     content: (
-      <div className="w-full h-full p-3.5 sm:p-4 flex flex-col justify-between select-none bg-white rounded-[18px] sm:rounded-[20px] border border-white/90 shadow-[0_12px_28px_rgba(7,40,74,0.12)]">
+      <div className="w-full h-full p-3.5 sm:p-4 flex flex-col justify-between select-none bg-white rounded-[18px] sm:rounded-[20px] border border-white/90  ">
         <div>
           <div className="font-mono text-[8px] sm:text-[8.5px] tracking-wider uppercase font-semibold text-slate-400">Code Health</div>
           <div className="text-lg sm:text-xl font-bold tracking-tight text-sky-600 mt-0.5">
@@ -42,7 +42,7 @@ const CARDS: CardData[] = [
   {
     id: 'graph',
     content: (
-      <div className="w-full h-full p-3.5 sm:p-4 flex flex-col justify-between select-none bg-white rounded-[18px] sm:rounded-[20px] border border-white/90 shadow-[0_12px_28px_rgba(7,40,74,0.12)]">
+      <div className="w-full h-full p-3.5 sm:p-4 flex flex-col justify-between select-none bg-white rounded-[18px] sm:rounded-[20px] border border-white/90  ">
         <div>
           <div className="font-mono text-[8px] sm:text-[8.5px] tracking-wider uppercase font-semibold text-slate-400">Dependency Graph</div>
           <div className="text-[11.5px] sm:text-[12.5px] font-bold text-slate-900 leading-snug mt-0.5">AST Parsing Engine</div>
@@ -70,7 +70,7 @@ const CARDS: CardData[] = [
   {
     id: 'live-map',
     content: (
-      <div className="w-full h-full p-3 sm:p-3.5 flex flex-col justify-between select-none bg-white/55 backdrop-blur-xl rounded-[18px] sm:rounded-[20px] border border-white/70 text-slate-900 shadow-[0_12px_28px_rgba(7,40,74,0.12)]">
+      <div className="w-full h-full p-3 sm:p-3.5 flex flex-col justify-between select-none bg-white/55 backdrop-blur-xl rounded-[18px] sm:rounded-[20px] border border-white/70 text-slate-900  ">
         <div className="flex items-center justify-between">
           <span className="font-mono text-[8px] sm:text-[8.5px] font-semibold uppercase tracking-wider text-slate-700">Live Map</span>
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -100,7 +100,7 @@ const CARDS: CardData[] = [
   {
     id: 'blast-radius',
     content: (
-      <div className="w-full h-full flex flex-col justify-between select-none bg-white rounded-[18px] sm:rounded-[20px] border border-white/90 shadow-[0_12px_28px_rgba(7,40,74,0.15)] overflow-hidden">
+      <div className="w-full h-full flex flex-col justify-between select-none bg-white rounded-[18px] sm:rounded-[20px] border border-white/90 overflow-hidden">
         <div className="bg-[#0f172a] text-white p-2 sm:p-2.5 flex items-center justify-between">
           <span className="font-mono text-[7.5px] sm:text-[8px] uppercase tracking-wider text-slate-400 font-medium">Blast Radius</span>
           <span className="text-rose-400 font-mono text-[7px] sm:text-[7.5px] bg-rose-950/80 px-1.5 py-0.5 rounded font-bold border border-rose-800/40">Impact</span>
@@ -125,7 +125,7 @@ const CARDS: CardData[] = [
   {
     id: 'datapoints',
     content: (
-      <div className="w-full h-full p-3.5 sm:p-4 flex flex-col justify-between select-none bg-white rounded-[18px] sm:rounded-[20px] border border-white/90 shadow-[0_12px_28px_rgba(7,40,74,0.12)]">
+      <div className="w-full h-full p-3.5 sm:p-4 flex flex-col justify-between select-none bg-white rounded-[18px] sm:rounded-[20px] border border-white/90  ">
         <div className="flex gap-1 flex-wrap">
           <span className="font-mono text-[7px] sm:text-[7.5px] font-semibold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full">AST</span>
           <span className="font-mono text-[7px] sm:text-[7.5px] font-semibold bg-[#D9F65A] text-[#1E2405] px-2 py-0.5 rounded-full">Rust</span>
@@ -143,7 +143,7 @@ const CARDS: CardData[] = [
   {
     id: 'ast-engine',
     content: (
-      <div className="w-full h-full p-3.5 sm:p-4 flex flex-col justify-between select-none bg-gradient-to-b from-sky-400/90 to-sky-600/95 backdrop-blur-xl border border-white/50 text-white rounded-[18px] sm:rounded-[20px] shadow-[0_12px_28px_rgba(7,40,74,0.14)]">
+      <div className="w-full h-full p-3.5 sm:p-4 flex flex-col justify-between select-none bg-gradient-to-b from-sky-400/90 to-sky-600/95 backdrop-blur-xl border border-white/50 text-white rounded-[18px] sm:rounded-[20px]">
         <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/30 backdrop-blur-md flex items-center justify-center text-white font-bold text-xs sm:text-sm shadow-sm">
           +
         </div>
@@ -160,7 +160,7 @@ const CARDS: CardData[] = [
   {
     id: 'architecture',
     content: (
-      <div className="w-full h-full p-3.5 sm:p-4 flex flex-col justify-between select-none bg-[#0B1420]/95 backdrop-blur-xl border border-white/15 text-white rounded-[18px] sm:rounded-[20px] shadow-[0_12px_28px_rgba(7,40,74,0.18)]">
+      <div className="w-full h-full p-3.5 sm:p-4 flex flex-col justify-between select-none bg-[#0B1420]/95 backdrop-blur-xl border border-white/15 text-white rounded-[18px] sm:rounded-[20px]">
         <div>
           <span className="font-mono text-[7.5px] sm:text-[8px] uppercase font-bold text-emerald-400">Architecture</span>
           <div className="text-[11px] sm:text-[12px] font-medium leading-snug text-slate-100 mt-1">
@@ -183,19 +183,17 @@ export const HeroCards3D: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [isHovered, setIsHovered] = useState(false);
   const x = useMotionValue(0);
 
   const setCardRef = useCallback((el: HTMLDivElement | null, i: number) => {
     cardRefs.current[i] = el;
   }, []);
 
-  // Continuous marquee animation
+  // Continuous marquee animation — never stops, moves right to left
   useAnimationFrame((_, delta) => {
-    if (isHovered) return;
     const cur = x.get();
     let next = cur - (40 * delta) / 1000;
-    if (Math.abs(next) >= SINGLE_SET_W) next += SINGLE_SET_W;
+    if (next <= -SINGLE_SET_W) next += SINGLE_SET_W;
     x.set(next);
   });
 
@@ -212,26 +210,14 @@ export const HeroCards3D: React.FC = () => {
       const r = card.getBoundingClientRect();
       const cardCenter = r.left + r.width / 2;
 
-      // Normalised -1.0 to 1.0 from center
       const raw = (cardCenter - cCenter) / (cRect.width / 2);
       const d = Math.max(-1.4, Math.min(1.4, raw));
 
-      // 1. 3D Yaw rotation towards center
       const rotateY = -d * 22;
-
-      // 2. Subtle 2D tilt following rainbow arch
       const rotateZ = d * 4.5;
-
-      // 3. Vertical arch curve (center at 0, edges curve down slightly)
       const translateY = Math.pow(Math.abs(d), 1.5) * 14;
-
-      // 4. Depth into screen at edges
       const translateZ = -Math.pow(Math.abs(d), 1.5) * 60;
-
-      // 5. Scale (center 1.05x, edges 0.90x)
       const scale = Math.max(0.88, 1.04 - Math.abs(d) * 0.12);
-
-      // 6. Opacity fade at far boundaries
       const opacity = Math.max(0.45, 1 - Math.pow(Math.abs(d) / 1.6, 3));
 
       card.style.transform = `perspective(1000px) translateY(${translateY}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg) scale(${scale})`;
@@ -249,8 +235,6 @@ export const HeroCards3D: React.FC = () => {
         maskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
         WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
       }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       <motion.div
         ref={trackRef}
@@ -267,20 +251,8 @@ export const HeroCards3D: React.FC = () => {
               marginRight: `${CARD_GAP}px`,
               transformStyle: 'preserve-3d',
               willChange: 'transform, opacity',
-              transition: 'transform 0.08s ease-out, opacity 0.08s ease-out',
             }}
-            className="shrink-0 bg-transparent flex flex-col justify-between cursor-pointer"
-            onMouseEnter={(e) => {
-              const el = e.currentTarget;
-              el.style.transform = 'perspective(1000px) translateY(-18px) translateZ(60px) rotateY(0deg) rotateZ(0deg) scale(1.1)';
-              el.style.opacity = '1';
-              el.style.zIndex = '20';
-              el.style.boxShadow = '0 25px 50px -12px rgba(7,40,74,0.35)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.zIndex = '';
-              e.currentTarget.style.boxShadow = '';
-            }}
+            className="shrink-0 bg-transparent flex flex-col justify-between"
           >
             {card.content}
           </div>
