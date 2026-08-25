@@ -222,8 +222,8 @@ export const HeroCards3D: React.FC = () => {
       // 2. Subtle 2D tilt following rainbow arch
       const rotateZ = d * 4.5;
 
-      // 3. Elevated vertical arch (lifted higher by ~16px)
-      const translateY = -16 + Math.pow(Math.abs(d), 1.5) * 14;
+      // 3. Vertical arch curve (center at 0, edges curve down slightly)
+      const translateY = Math.pow(Math.abs(d), 1.5) * 14;
 
       // 4. Depth into screen at edges
       const translateZ = -Math.pow(Math.abs(d), 1.5) * 60;
@@ -242,7 +242,7 @@ export const HeroCards3D: React.FC = () => {
   return (
     <div
       ref={containerRef}
-      className="max-w-[1140px] w-full mx-auto overflow-hidden py-1 relative select-none bg-transparent"
+      className="max-w-[1140px] w-full mx-auto overflow-hidden pt-6 pb-2 relative select-none bg-transparent"
       style={{
         perspective: '1200px',
         perspectiveOrigin: 'center 75%',
