@@ -242,8 +242,13 @@ export const HeroCards3D: React.FC = () => {
   return (
     <div
       ref={containerRef}
-      className="w-full overflow-hidden py-1 relative select-none bg-transparent"
-      style={{ perspective: '1200px', perspectiveOrigin: 'center 75%' }}
+      className="max-w-[1120px] w-full mx-auto overflow-hidden py-1 relative select-none bg-transparent"
+      style={{
+        perspective: '1200px',
+        perspectiveOrigin: 'center 75%',
+        maskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
+        WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
+      }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
