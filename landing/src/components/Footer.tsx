@@ -35,7 +35,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenApp }) => {
             <div>
               <h4 className="font-mono text-[10px] sm:text-[11px] tracking-[0.14em] uppercase font-semibold text-white mb-3 sm:mb-4">Product</h4>
               <ul className="space-y-2 sm:space-y-2.5">
-                <li><button onClick={onOpenApp} className="text-sm text-[#D9F65A] hover:underline transition-colors font-medium">Launch Web App</button></li>
+                <li><button onClick={onOpenApp} className="text-sm text-[#D9F65A] hover:underline transition-colors font-medium">Explore Atlas</button></li>
                 <li><a href="#features" className="text-sm text-slate-400 hover:text-white transition-colors">Features</a></li>
                 <li><a href="#how-it-works" className="text-sm text-slate-400 hover:text-white transition-colors">How it works</a></li>
                 <li><a href="#why-atlas" className="text-sm text-slate-400 hover:text-white transition-colors">Why Atlas</a></li>
@@ -52,7 +52,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenApp }) => {
               <h4 className="font-mono text-[10px] sm:text-[11px] tracking-[0.14em] uppercase font-semibold text-white mb-3 sm:mb-4">Install</h4>
               <ul className="space-y-2 sm:space-y-2.5">
                 <li><a href="/atlas-map-0.1.1.vsix" download className="text-sm text-slate-400 hover:text-white transition-colors">VS Code Extension</a></li>
-                <li><button onClick={onOpenApp} className="text-sm text-slate-400 hover:text-white transition-colors">Web Visualizer</button></li>
+                <li><button onClick={onOpenApp} className="text-sm text-slate-400 hover:text-white transition-colors">Interactive Map</button></li>
               </ul>
             </div>
           </div>

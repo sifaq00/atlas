@@ -103,7 +103,7 @@ const Hero: React.FC<HeroProps> = ({ onOpenApp }) => {
                 onClick={onOpenApp}
                 className="font-mono text-[10.5px] sm:text-[11.5px] font-semibold tracking-[0.08em] uppercase py-2 sm:py-2.5 px-4 sm:px-6 rounded-full bg-slate-900 text-white hover:bg-slate-800 transition-all shadow-[0_4px_16px_rgba(0,0,0,0.2)] hover:-translate-y-0.5"
               >
-                Launch Web App
+                Explore Atlas
               </button>
 
               {/* Mobile Menu Hamburger Button */}
@@ -130,7 +130,7 @@ const Hero: React.FC<HeroProps> = ({ onOpenApp }) => {
               <a href="#how-it-works" onClick={() => setMobileMenuOpen(false)} className="text-white/90 hover:text-white py-1">How it works</a>
               <a href="#why-atlas" onClick={() => setMobileMenuOpen(false)} className="text-white/90 hover:text-white py-1">Why Atlas</a>
               <a href="https://github.com/sifaq00/atlas" target="_blank" rel="noopener" className="text-white/90 hover:text-white py-1">GitHub</a>
-              <button onClick={() => { setMobileMenuOpen(false); onOpenApp?.(); }} className="text-left text-[#D9F65A] font-bold py-1">Launch Web App →</button>
+              <button onClick={() => { setMobileMenuOpen(false); onOpenApp?.(); }} className="text-left text-[#D9F65A] font-bold py-1">Explore Atlas →</button>
             </div>
           )}
         </div>
@@ -160,7 +160,7 @@ const Hero: React.FC<HeroProps> = ({ onOpenApp }) => {
               whileTap={{ scale: 0.96 }}
               className="group font-mono text-[10.5px] sm:text-xs font-semibold tracking-[0.08em] uppercase py-1.5 pl-4 sm:pl-5 pr-1.5 sm:pr-2 rounded-full bg-[#D9F65A] text-[#1E2405] inline-flex items-center gap-2 sm:gap-2.5 shadow-[0_12px_28px_rgba(30,36,5,0.22)] transition-all"
             >
-              <span>Get Started (Web App)</span>
+              <span>Explore Atlas</span>
               <span className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#1E2405] text-[#D9F65A] flex items-center justify-center transition-transform group-hover:rotate-45">
                 <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
                   <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>

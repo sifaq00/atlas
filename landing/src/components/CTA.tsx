@@ -50,7 +50,7 @@ const CTA: React.FC<CTAProps> = ({ onOpenApp }) => {
               whileTap={{ scale: 0.96 }}
               className="group font-mono text-[11px] sm:text-xs font-bold tracking-wider uppercase py-2 pl-5 sm:pl-6 pr-2 rounded-full bg-[#D9F65A] text-[#1E2405] inline-flex items-center gap-2.5 sm:gap-3 shadow-[0_12px_28px_rgba(30,36,5,0.22)] transition-shadow"
             >
-              <span>Launch Web App</span>
+              <span>Explore Atlas</span>
               <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#1E2405] text-[#D9F65A] flex items-center justify-center transition-transform group-hover:rotate-45">
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                   <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>

@@ -45,6 +45,28 @@ export interface DependencyEdge {
   isExternal?: boolean;
 }
 
+export type HealthGrade = 'A+' | 'A' | 'B' | 'C' | 'D' | 'F';
+
+export interface ArchitectureIssue {
+  id: string;
+  type: 'circular' | 'orphan' | 'god-module' | 'deep-cascade' | 'security';
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  title: string;
+  description: string;
+  fileIds: string[];
+}
+
+export interface HealthReport {
+  grade: HealthGrade;
+  score: number; // 0 - 100
+  totalLines: number;
+  deadCodePercentage: number;
+  orphanCount: number;
+  circularCyclesCount: number;
+  godModulesCount: number;
+  issues: ArchitectureIssue[];
+}
+
 export interface DependencyGraph {
   nodes: Record<string, FileNode>;
   edges: DependencyEdge[];
@@ -53,6 +75,9 @@ export interface DependencyGraph {
   scannedAt: number;
   totalFiles: number;
   totalDependencies: number;
+  health: HealthReport;
+  prChangedFiles?: string[];
+  pullNumber?: number;
 }
 
 export interface BlastRadiusNode {
@@ -88,3 +113,9 @@ export interface ImpactResult {
 }
 
 export type ViewMode = 'full' | 'focus' | 'impact';
+
+export type MainViewMode = 'graph' | '3d' | 'radial' | 'treemap' | 'matrix' | 'flow';
+
+export type GraphPhysicsLayout = 'hierarchical' | 'organic' | 'radial' | 'cluster';
+
+export type IsolationMode = 'full' | '1-hop' | '2-hop';

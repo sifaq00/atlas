@@ -1,4 +1,15 @@
-import { DependencyGraph, FileCategory, ImpactResult, BlastRadiusNode, RiskLevel } from './types';
+import {
+  DependencyGraph,
+  FileCategory,
+  ImpactResult,
+  BlastRadiusNode,
+  RiskLevel,
+  HealthReport,
+  HealthGrade,
+  ArchitectureIssue,
+  FileNode,
+  DependencyEdge,
+} from './types';
 
 export class ImpactAnalyzer {
   static analyze(graph: DependencyGraph, targetFileId: string): ImpactResult {
@@ -90,7 +101,6 @@ export class ImpactAnalyzer {
     let riskScore = 0;
     const riskReasons: string[] = [];
 
-    // Dependents weight
     if (directCount > 10) {
       riskScore += 35;
       riskReasons.push(`High direct dependents (${directCount} files)`);
@@ -125,7 +135,6 @@ export class ImpactAnalyzer {
     else if (riskScore >= 45) riskLevel = 'HIGH';
     else if (riskScore >= 20) riskLevel = 'MEDIUM';
 
-    // Check for circular dependency involving target
     const circularPaths = this.findCyclesForNode(graph, targetFileId);
 
     return {
@@ -152,22 +161,123 @@ export class ImpactAnalyzer {
     };
   }
 
+  static analyzeHealth(nodes: Record<string, FileNode>, _edges: DependencyEdge[]): HealthReport {
+    const totalFiles = Object.keys(nodes).length;
+    let totalLines = 0;
+    const issues: ArchitectureIssue[] = [];
+
+    let orphanCount = 0;
+    let godModulesCount = 0;
+
+    // Detect Circular Dependencies across whole graph
+    const allCycles: string[][] = [];
+    const visitedGlobal = new Set<string>();
+
+    for (const fileId of Object.keys(nodes)) {
+      if (visitedGlobal.has(fileId)) continue;
+      const cycles = this.findCyclesForNodeSimple(nodes, fileId);
+      for (const c of cycles) {
+        allCycles.push(c);
+        c.forEach((f) => visitedGlobal.add(f));
+      }
+    }
+
+    for (const [id, node] of Object.entries(nodes)) {
+      totalLines += node.lineCount;
+
+      const isEntryPoint =
+        node.relativePath.includes('main.') ||
+        node.relativePath.includes('index.') ||
+        node.relativePath.includes('App.') ||
+        node.relativePath.startsWith('pages/') ||
+        node.relativePath.startsWith('app/') ||
+        node.category === 'config';
+
+      // 1. Orphan Check (No one imports it and it imports nothing, or purely disconnected non-entry)
+      if (node.importedBy.length === 0 && !isEntryPoint) {
+        orphanCount++;
+      }
+
+      // 2. God Module Check (> 400 lines or > 12 dependencies)
+      if (node.lineCount > 400 || node.imports.length > 12) {
+        godModulesCount++;
+        issues.push({
+          id: `god-${id}`,
+          type: 'god-module',
+          severity: node.lineCount > 600 ? 'high' : 'medium',
+          title: `Large Module: ${node.name}`,
+          description: `${node.relativePath} has ${node.lineCount} lines and ${node.imports.length} imports. Consider refactoring into smaller sub-modules.`,
+          fileIds: [id],
+        });
+      }
+    }
+
+    // Circular Dependency Issues
+    if (allCycles.length > 0) {
+      for (let i = 0; i < Math.min(5, allCycles.length); i++) {
+        const cycle = allCycles[i];
+        issues.push({
+          id: `cycle-${i}`,
+          type: 'circular',
+          severity: 'high',
+          title: `Circular Dependency Cycle`,
+          description: cycle.map((p) => p.split('/').pop()).join(' → '),
+          fileIds: cycle,
+        });
+      }
+    }
+
+    // Calculate Health Score (starts at 100)
+    let score = 100;
+    const deadCodePercentage = totalFiles > 0 ? Math.round((orphanCount / totalFiles) * 100) : 0;
+
+    // Deductions
+    score -= Math.min(25, allCycles.length * 8); // -8 per circular cycle
+    score -= Math.min(20, Math.round(deadCodePercentage * 0.4)); // dead code deduction
+    score -= Math.min(20, godModulesCount * 4); // god module deduction
+
+    score = Math.max(20, Math.min(100, score));
+
+    let grade: HealthGrade = 'A+';
+    if (score >= 95) grade = 'A+';
+    else if (score >= 85) grade = 'A';
+    else if (score >= 70) grade = 'B';
+    else if (score >= 55) grade = 'C';
+    else if (score >= 40) grade = 'D';
+    else grade = 'F';
+
+    return {
+      grade,
+      score,
+      totalLines,
+      deadCodePercentage,
+      orphanCount,
+      circularCyclesCount: allCycles.length,
+      godModulesCount,
+      issues,
+    };
+  }
+
   private static findCyclesForNode(graph: DependencyGraph, startId: string): string[][] {
+    return this.findCyclesForNodeSimple(graph.nodes, startId);
+  }
+
+  private static findCyclesForNodeSimple(nodes: Record<string, FileNode>, startId: string): string[][] {
     const cycles: string[][] = [];
     const visited = new Set<string>();
     const path: string[] = [];
 
     const dfs = (currentId: string, depth: number) => {
-      if (depth > 8) return; // limit depth
+      if (depth > 6) return;
       visited.add(currentId);
       path.push(currentId);
 
-      const node = graph.nodes[currentId];
+      const node = nodes[currentId];
       if (node) {
         for (const nextId of node.imports) {
           if (nextId === startId && path.length > 1) {
             cycles.push([...path, startId]);
-          } else if (!visited.has(nextId) && path.length < 6) {
+          } else if (!visited.has(nextId) && path.length < 5) {
             dfs(nextId, depth + 1);
           }
         }
@@ -179,5 +289,52 @@ export class ImpactAnalyzer {
 
     dfs(startId, 0);
     return cycles;
+  }
+
+  static findShortestPath(
+    graph: DependencyGraph,
+    sourceId: string,
+    targetId: string
+  ): { path: string[]; edges: DependencyEdge[]; found: boolean } {
+    if (!graph.nodes[sourceId] || !graph.nodes[targetId]) {
+      return { path: [], edges: [], found: false };
+    }
+    if (sourceId === targetId) {
+      return { path: [sourceId], edges: [], found: true };
+    }
+
+    const queue: Array<{ id: string; path: string[] }> = [{ id: sourceId, path: [sourceId] }];
+    const visited = new Set<string>([sourceId]);
+
+    while (queue.length > 0) {
+      const current = queue.shift();
+      if (!current) break;
+      const { id, path } = current;
+      const node = graph.nodes[id];
+      if (!node) continue;
+
+      for (const nextId of node.imports) {
+        if (nextId === targetId) {
+          const fullPath = [...path, nextId];
+          const pathEdges: DependencyEdge[] = [];
+          for (let i = 0; i < fullPath.length - 1; i++) {
+            pathEdges.push({
+              id: `${fullPath[i]}->${fullPath[i + 1]}`,
+              source: fullPath[i],
+              target: fullPath[i + 1],
+              type: 'import',
+            });
+          }
+          return { path: fullPath, edges: pathEdges, found: true };
+        }
+
+        if (!visited.has(nextId) && graph.nodes[nextId]) {
+          visited.add(nextId);
+          queue.push({ id: nextId, path: [...path, nextId] });
+        }
+      }
+    }
+
+    return { path: [], edges: [], found: false };
   }
 }
