@@ -1,7 +1,11 @@
 import React from 'react';
 import { motion, useInView } from 'framer-motion';
 
-const Footer: React.FC = () => {
+interface FooterProps {
+  onOpenApp?: () => void;
+}
+
+const Footer: React.FC<FooterProps> = ({ onOpenApp }) => {
   const ref = React.useRef(null);
   const inView = useInView(ref, { once: true, margin: '-40px' });
 
@@ -22,7 +26,7 @@ const Footer: React.FC = () => {
               <img src="/atlasss.webp" alt="Atlas" className="h-6 object-contain" style={{ filter: 'brightness(0) invert(1)' }} />
             </a>
             <p className="text-sm text-slate-400 leading-relaxed">
-              Codebase architecture visualizer for VS Code. Understand any repo in minutes, not days.
+              Codebase architecture visualizer for VS Code & Web. Understand any repo in minutes, not days.
             </p>
           </div>
 
@@ -31,6 +35,7 @@ const Footer: React.FC = () => {
             <div>
               <h4 className="font-mono text-[10px] sm:text-[11px] tracking-[0.14em] uppercase font-semibold text-white mb-3 sm:mb-4">Product</h4>
               <ul className="space-y-2 sm:space-y-2.5">
+                <li><button onClick={onOpenApp} className="text-sm text-[#D9F65A] hover:underline transition-colors font-medium">Launch Web App</button></li>
                 <li><a href="#features" className="text-sm text-slate-400 hover:text-white transition-colors">Features</a></li>
                 <li><a href="#how-it-works" className="text-sm text-slate-400 hover:text-white transition-colors">How it works</a></li>
                 <li><a href="#why-atlas" className="text-sm text-slate-400 hover:text-white transition-colors">Why Atlas</a></li>
@@ -46,8 +51,8 @@ const Footer: React.FC = () => {
             <div>
               <h4 className="font-mono text-[10px] sm:text-[11px] tracking-[0.14em] uppercase font-semibold text-white mb-3 sm:mb-4">Install</h4>
               <ul className="space-y-2 sm:space-y-2.5">
-                <li><a href="/atlas-map-0.1.1.vsix" download className="text-sm text-slate-400 hover:text-white transition-colors">VS Code</a></li>
-                <li><span className="text-sm text-slate-500">More editors soon</span></li>
+                <li><a href="/atlas-map-0.1.1.vsix" download className="text-sm text-slate-400 hover:text-white transition-colors">VS Code Extension</a></li>
+                <li><button onClick={onOpenApp} className="text-sm text-slate-400 hover:text-white transition-colors">Web Visualizer</button></li>
               </ul>
             </div>
           </div>

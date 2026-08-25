@@ -1,7 +1,11 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
-const CTA: React.FC = () => {
+interface CTAProps {
+  onOpenApp?: () => void;
+}
+
+const CTA: React.FC<CTAProps> = ({ onOpenApp }) => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -40,29 +44,27 @@ const CTA: React.FC = () => {
             One click and the next codebase you open comes with a complete, interactive map.
           </p>
           <div className="flex items-center justify-center gap-3 sm:gap-3.5 mt-6 sm:mt-8 flex-wrap">
-            <motion.a
-              href="/atlas-map-0.1.1.vsix"
-              download
+            <motion.button
+              onClick={onOpenApp}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.96 }}
               className="group font-mono text-[11px] sm:text-xs font-bold tracking-wider uppercase py-2 pl-5 sm:pl-6 pr-2 rounded-full bg-[#D9F65A] text-[#1E2405] inline-flex items-center gap-2.5 sm:gap-3 shadow-[0_12px_28px_rgba(30,36,5,0.22)] transition-shadow"
             >
-              <span>Install for VS Code</span>
+              <span>Launch Web App</span>
               <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#1E2405] text-[#D9F65A] flex items-center justify-center transition-transform group-hover:rotate-45">
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                   <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </span>
-            </motion.a>
+            </motion.button>
             <motion.a
-              href="https://github.com/sifaq00/atlas"
-              target="_blank"
-              rel="noopener"
+              href="/atlas-map-0.1.1.vsix"
+              download
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
               className="font-mono text-[11px] sm:text-xs font-semibold tracking-wider uppercase py-3 sm:py-3.5 px-6 sm:px-7 rounded-full bg-slate-950/40 hover:bg-slate-950/60 text-white border border-white/30 backdrop-blur-md transition-colors"
             >
-              Star on GitHub
+              Download Extension (.vsix)
             </motion.a>
           </div>
         </motion.div>

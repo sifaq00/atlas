@@ -1,7 +1,11 @@
 import React, { useState, useRef } from 'react';
 import { motion, useMotionValueEvent, useScroll } from 'framer-motion';
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+  onOpenApp?: () => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ onOpenApp }) => {
   const [state, setState] = useState<'hidden' | 'hero' | 'solid'>('hero');
   const lastScrollY = useRef(0);
   const { scrollY } = useScroll();
@@ -46,13 +50,19 @@ const Navbar: React.FC = () => {
         </nav>
 
         {/* CTA */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
+          <button
+            onClick={onOpenApp}
+            className="font-mono text-[10.5px] sm:text-[11px] font-semibold tracking-[0.08em] uppercase py-2 sm:py-2.5 px-4 sm:px-5 rounded-full bg-slate-900 text-white hover:bg-slate-800 transition-all"
+          >
+            Launch Web App
+          </button>
           <a
             href="/atlas-map-0.1.1.vsix"
             download
-            className="font-mono text-[10.5px] sm:text-[11px] font-semibold tracking-[0.08em] uppercase py-2 sm:py-2.5 px-5 sm:px-6 rounded-full bg-[#D9F65A] text-[#1E2405] hover:brightness-105 transition-all shadow-[0_2px_8px_rgba(217,246,90,0.25)]"
+            className="font-mono text-[10.5px] sm:text-[11px] font-semibold tracking-[0.08em] uppercase py-2 sm:py-2.5 px-4 sm:px-5 rounded-full bg-[#D9F65A] text-[#1E2405] hover:brightness-105 transition-all shadow-[0_2px_8px_rgba(217,246,90,0.25)]"
           >
-            Install Free
+            VS Code Extension
           </a>
 
           <button className="md:hidden text-ink-soft hover:text-ink p-2 rounded-lg" aria-label="Toggle menu">

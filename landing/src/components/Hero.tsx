@@ -14,38 +14,46 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } },
 };
 
-const Hero: React.FC = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const heroRef = useRef<HTMLDivElement>(null);
+interface HeroProps {
+  onOpenApp?: () => void;
+}
 
-  // Mouse parallax
+const Hero: React.FC<HeroProps> = ({ onOpenApp }) => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const heroRef = useRef<HTMLElement>(null);
+
+  // Mouse tilt tracking
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
+
+  // Smooth springs for mouse movement
   const springConfig = { damping: 25, stiffness: 120 };
-  const smoothX = useSpring(mouseX, springConfig);
-  const smoothY = useSpring(mouseY, springConfig);
+  const smoothMouseX = useSpring(mouseX, springConfig);
+  const smoothMouseY = useSpring(mouseY, springConfig);
 
-  const bgX = useTransform(smoothX, [-0.5, 0.5], [-20, 20]);
-  const bgY = useTransform(smoothY, [-0.5, 0.5], [-20, 20]);
-  const contentX = useTransform(smoothX, [-0.5, 0.5], [10, -10]);
-  const contentY = useTransform(smoothY, [-0.5, 0.5], [10, -10]);
+  // Parallax layer transforms
+  const bgX = useTransform(smoothMouseX, [-1, 1], [-15, 15]);
+  const bgY = useTransform(smoothMouseY, [-1, 1], [-10, 10]);
+  const contentX = useTransform(smoothMouseX, [-1, 1], [8, -8]);
+  const contentY = useTransform(smoothMouseY, [-1, 1], [6, -6]);
 
-  // Scroll parallax
+  // Scroll parallax effects
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ['start start', 'end start'],
   });
-  const bgParallaxY = useTransform(scrollYProgress, [0, 1], [0, 200]);
-  const contentParallaxY = useTransform(scrollYProgress, [0, 1], [0, 80]);
-  const cardsParallaxY = useTransform(scrollYProgress, [0, 1], [0, -50]);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!heroRef.current) return;
-    const rect = heroRef.current.getBoundingClientRect();
+  const bgParallaxY = useTransform(scrollYProgress, [0, 1], [0, 60]);
+  const contentParallaxY = useTransform(scrollYProgress, [0, 1], [0, -30]);
+  const cardsParallaxY = useTransform(scrollYProgress, [0, 1], [0, 20]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const rect = heroRef.current?.getBoundingClientRect();
+    if (!rect) return;
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    mouseX.set(x);
-    mouseY.set(y);
+    mouseX.set(x * 2);
+    mouseY.set(y * 2);
   };
 
   const handleMouseLeave = () => {
@@ -91,13 +99,12 @@ const Hero: React.FC = () => {
 
             {/* Right Action */}
             <motion.div variants={fadeUp} className="flex items-center gap-2">
-              <a
-                href="/atlas-map-0.1.1.vsix"
-                download
-                className="font-mono text-[10.5px] sm:text-[11.5px] font-semibold tracking-[0.08em] uppercase py-2 sm:py-2.5 px-4 sm:px-6 rounded-full bg-[#D9F65A] text-[#1E2405] hover:brightness-105 transition-all shadow-[0_4px_16px_rgba(30,36,5,0.18)] hover:-translate-y-0.5"
+              <button
+                onClick={onOpenApp}
+                className="font-mono text-[10.5px] sm:text-[11.5px] font-semibold tracking-[0.08em] uppercase py-2 sm:py-2.5 px-4 sm:px-6 rounded-full bg-slate-900 text-white hover:bg-slate-800 transition-all shadow-[0_4px_16px_rgba(0,0,0,0.2)] hover:-translate-y-0.5"
               >
-                Install Free
-              </a>
+                Launch Web App
+              </button>
 
               {/* Mobile Menu Hamburger Button */}
               <button
@@ -123,6 +130,7 @@ const Hero: React.FC = () => {
               <a href="#how-it-works" onClick={() => setMobileMenuOpen(false)} className="text-white/90 hover:text-white py-1">How it works</a>
               <a href="#why-atlas" onClick={() => setMobileMenuOpen(false)} className="text-white/90 hover:text-white py-1">Why Atlas</a>
               <a href="https://github.com/sifaq00/atlas" target="_blank" rel="noopener" className="text-white/90 hover:text-white py-1">GitHub</a>
+              <button onClick={() => { setMobileMenuOpen(false); onOpenApp?.(); }} className="text-left text-[#D9F65A] font-bold py-1">Launch Web App →</button>
             </div>
           )}
         </div>
@@ -141,33 +149,33 @@ const Hero: React.FC = () => {
           </motion.h1>
 
           <motion.p variants={fadeUp} className="max-w-[560px] mx-auto mt-2 sm:mt-3 text-xs sm:text-sm md:text-[15px] leading-relaxed text-white/85 font-normal tracking-[-0.02em] px-2">
-            Atlas turns any repository you open inside VS Code into an interactive architecture map — entry points, hot files, and blast radius mapped the moment you clone.
+            Atlas turns any repository you open into an interactive architecture map — entry points, hot files, and blast radius mapped the moment you scan.
           </motion.p>
 
           {/* Dual CTA Buttons */}
           <motion.div variants={fadeUp} className="flex items-center justify-center gap-3 sm:gap-3.5 mt-3.5 sm:mt-5 flex-wrap">
-            <motion.a
-              href="#how-it-works"
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.97 }}
-              className="font-mono text-[10.5px] sm:text-xs font-medium tracking-[0.08em] uppercase py-2.5 sm:py-3 px-5 sm:px-6 rounded-full bg-slate-950/40 hover:bg-slate-950/60 text-white border border-white/30 backdrop-blur-md transition-colors"
-            >
-              View Demo
-            </motion.a>
-
-            <motion.a
-              href="/atlas-map-0.1.1.vsix"
-              download
+            <motion.button
+              onClick={onOpenApp}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.96 }}
-              className="group font-mono text-[10.5px] sm:text-xs font-medium tracking-[0.08em] uppercase py-1 pl-4 sm:pl-5 pr-1 sm:pr-1.5 rounded-full bg-[#D9F65A] text-[#1E2405] inline-flex items-center gap-2 sm:gap-2.5 shadow-[0_12px_28px_rgba(30,36,5,0.22)] transition-all"
+              className="group font-mono text-[10.5px] sm:text-xs font-semibold tracking-[0.08em] uppercase py-1.5 pl-4 sm:pl-5 pr-1.5 sm:pr-2 rounded-full bg-[#D9F65A] text-[#1E2405] inline-flex items-center gap-2 sm:gap-2.5 shadow-[0_12px_28px_rgba(30,36,5,0.22)] transition-all"
             >
-              <span>Get Started</span>
+              <span>Get Started (Web App)</span>
               <span className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#1E2405] text-[#D9F65A] flex items-center justify-center transition-transform group-hover:rotate-45">
                 <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
                   <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </span>
+            </motion.button>
+
+            <motion.a
+              href="/atlas-map-0.1.1.vsix"
+              download
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              className="font-mono text-[10.5px] sm:text-xs font-medium tracking-[0.08em] uppercase py-2.5 sm:py-3 px-5 sm:px-6 rounded-full bg-slate-950/40 hover:bg-slate-950/60 text-white border border-white/30 backdrop-blur-md transition-colors"
+            >
+              Download VS Code Extension
             </motion.a>
           </motion.div>
         </motion.div>

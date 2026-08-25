@@ -20,7 +20,11 @@ const useCountUp = (target: number, inView: boolean, duration = 1400, prefix = '
   return value;
 };
 
-const BentoGrid: React.FC = () => {
+interface BentoGridProps {
+  onOpenApp?: () => void;
+}
+
+const BentoGrid: React.FC<BentoGridProps> = ({ onOpenApp }) => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
 
@@ -62,7 +66,8 @@ const BentoGrid: React.FC = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-            className="rounded-[22px] p-6 sm:p-8 flex flex-col relative overflow-hidden bg-gradient-to-br from-sky-brand to-sky-light text-white md:col-span-2 lg:col-span-1 lg:row-span-2 group hover:shadow-[0_20px_60px_rgba(2,132,199,0.25)] transition-shadow duration-500"
+            onClick={onOpenApp}
+            className="rounded-[22px] p-6 sm:p-8 flex flex-col relative overflow-hidden bg-gradient-to-br from-sky-brand to-sky-light text-white md:col-span-2 lg:col-span-1 lg:row-span-2 group hover:shadow-[0_20px_60px_rgba(2,132,199,0.25)] transition-shadow duration-500 cursor-pointer"
           >
             {/* Animated glow pulse */}
             <motion.div
