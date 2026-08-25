@@ -191,20 +191,28 @@ export class ImpactAnalyzer {
         node.relativePath.includes('App.') ||
         node.relativePath.startsWith('pages/') ||
         node.relativePath.startsWith('app/') ||
-        node.category === 'config';
+        node.relativePath.startsWith('routes/') ||
+        node.category === 'config' ||
+        node.metadata.isRoute ||
+        node.metadata.isTest ||
+        node.metadata.isConfig ||
+        node.relativePath.endsWith('.d.ts') ||
+        node.relativePath.includes('setup') ||
+        node.relativePath.includes('stories');
 
-      // 1. Orphan Check (No one imports it and it imports nothing, or purely disconnected non-entry)
+      // 1. Orphan Check (Legitimate dead code: not an entry point, not a test, not imported by anyone)
       if (node.importedBy.length === 0 && !isEntryPoint) {
         orphanCount++;
       }
 
-      // 2. God Module Check (> 400 lines or > 12 dependencies)
-      if (node.lineCount > 400 || node.imports.length > 12) {
+      // 2. God Module Check (Industry threshold: > 850 lines OR (> 22 imports AND > 450 lines))
+      const isGodModule = node.lineCount > 850 || (node.imports.length > 22 && node.lineCount > 450);
+      if (isGodModule) {
         godModulesCount++;
         issues.push({
           id: `god-${id}`,
           type: 'god-module',
-          severity: node.lineCount > 600 ? 'high' : 'medium',
+          severity: node.lineCount > 1200 ? 'high' : 'medium',
           title: `Large Module: ${node.name}`,
           description: `${node.relativePath} has ${node.lineCount} lines and ${node.imports.length} imports. Consider refactoring into smaller sub-modules.`,
           fileIds: [id],
@@ -227,20 +235,22 @@ export class ImpactAnalyzer {
       }
     }
 
-    // Calculate Health Score (starts at 100)
+    // Calculate Health Score (starts at 100 with proportional deduction)
     let score = 100;
     const deadCodePercentage = totalFiles > 0 ? Math.round((orphanCount / totalFiles) * 100) : 0;
 
-    // Deductions
-    score -= Math.min(25, allCycles.length * 8); // -8 per circular cycle
-    score -= Math.min(20, Math.round(deadCodePercentage * 0.4)); // dead code deduction
-    score -= Math.min(20, godModulesCount * 4); // god module deduction
+    // Deductions calibrated to industry standards
+    score -= Math.min(22, allCycles.length * 5); // -5 per circular cycle (max 22)
+    score -= Math.min(18, godModulesCount * 3); // -3 per god module (max 18)
+    if (deadCodePercentage > 12) {
+      score -= Math.min(15, Math.round((deadCodePercentage - 12) * 0.4));
+    }
 
-    score = Math.max(20, Math.min(100, score));
+    score = Math.max(25, Math.min(100, Math.round(score)));
 
     let grade: HealthGrade = 'A+';
-    if (score >= 95) grade = 'A+';
-    else if (score >= 85) grade = 'A';
+    if (score >= 92) grade = 'A+';
+    else if (score >= 82) grade = 'A';
     else if (score >= 70) grade = 'B';
     else if (score >= 55) grade = 'C';
     else if (score >= 40) grade = 'D';
