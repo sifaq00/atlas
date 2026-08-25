@@ -3,6 +3,7 @@ dist/
 dist-webview/
 out/
 *.vsix
+!landing/public/*.vsix
 *.zip
 .DS_Store
 *.log
